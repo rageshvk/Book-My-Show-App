@@ -13,6 +13,12 @@ pipeline {
                 cleanWs()
             }
         }
+        stage('Checkout from Git') {
+            steps {
+                git 'https://github.com/rageshvk/Book-My-Show-App.git'
+                sh 'ls -la'  // Verify files after checkout
+            }
+        }
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonar-server') {
@@ -33,7 +39,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                cd Book-My-Show-App/bookmyshow-app
+                cd bookmyshow-app
                 ls -la  # Verify package.json exists
                 if [ -f package.json ]; then
                     rm -rf node_modules package-lock.json  # Remove old dependencies
