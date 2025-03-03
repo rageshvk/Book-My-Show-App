@@ -3,7 +3,9 @@ pipeline {
     tools {
         jdk 'jdk17'
         nodejs 'node23'
-        sonar 'sonar-scanner'
+    }
+    environment {
+        SCANNER_HOME = tool 'sonar-scanner'
     }
     stages {
         stage('Clean Workspace') {
@@ -13,10 +15,10 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonar-scanner') {
+                withSonarQubeEnv('sonar-server') {
                     sh ''' 
-                    sonar-scanner -Dsonar.projectName=BMS \
-                                  -Dsonar.projectKey=BMS 
+                    $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=BMS \
+                    -Dsonar.projectKey=BMS 
                     '''
                 }
             }
