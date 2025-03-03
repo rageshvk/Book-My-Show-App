@@ -3,7 +3,7 @@ pipeline {
     tools {
         jdk 'jdk17'
         nodejs 'node23'
-        Sonar 'sonar-scanner'
+        sonar 'sonar-scanner'
     }
     stages {
         stage('Clean Workspace') {
