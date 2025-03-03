@@ -33,7 +33,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                cd bookmyshow-app
+                cd Book-My-Show-App/bookmyshow-app
                 ls -la  # Verify package.json exists
                 if [ -f package.json ]; then
                     rm -rf node_modules package-lock.json  # Remove old dependencies
