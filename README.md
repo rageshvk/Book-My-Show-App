@@ -1,121 +1,66 @@
-BookMyShow Node.js Application
+# 📽️ BookMyShow Node.js Application
 
-Overview
+## 📝 Overview
 
-The BookMyShow Node.js App is a web application that provides movie ticket booking services. This repository includes the source code and a Jenkins pipeline (Jenkinsfile) for continuous integration and deployment.
+The **BookMyShow Node.js App** is a web application for booking movie tickets. This repository includes the source code and a **Jenkins pipeline (Jenkinsfile)** for continuous integration and deployment.
 
-Prerequisites
+## ✅ Prerequisites
 
 Before running the pipeline or the app locally, ensure you have the following installed:
 
-Node.js (v18+ recommended)
+- **Node.js** (v18+ recommended)  
+- **npm** (Node Package Manager)  
+- **Docker**  
+- **Jenkins**  
+- **SonarQube** (for code quality analysis)  
+- **Trivy** (for security scanning)  
+- **Prometheus** (for monitoring, running on a separate instance)  
+- **Grafana** (for visualization and dashboards, running on a separate instance)  
 
-npm (Node Package Manager)
+---
 
-Docker
+## 🔄 Jenkins CI/CD Pipeline
 
-Jenkins
+This project includes a **Jenkins pipeline** defined in `Jenkinsfile`. Below is a breakdown of each stage:
 
-SonarQube (for code quality analysis)
+### 📌 Pipeline Stages
 
-Trivy (for security scanning)
+1️⃣ **Clean Workspace**  
+   - Deletes previous builds and cleans up the workspace.  
 
-Prometheus (for monitoring, running on a separate instance)
+2️⃣ **SonarQube Analysis**  
+   - Runs SonarQube static code analysis to ensure code quality.  
 
-Grafana (for visualization and dashboards, running on a separate instance)
+3️⃣ **Quality Gate**  
+   - Waits for the SonarQube quality gate result. If it fails, the pipeline stops.  
 
-Jenkins CI/CD Pipeline
+4️⃣ **Install Dependencies**  
+   - Navigates to the application directory (`bookmyshow-app`).  
+   - Removes existing `node_modules` and installs dependencies using `npm install`.  
 
-This project includes a Jenkins pipeline defined in Jenkinsfile. Below is a breakdown of each stage:
+5️⃣ **Trivy FS Scan**  
+   - Runs a security scan on the file system to detect vulnerabilities.  
 
-Clean Workspace
+6️⃣ **Docker Build & Push**  
+   - Builds a Docker image for the application.  
+   - Pushes the image to **Docker Hub**.  
 
-Deletes previous builds and cleans up the workspace.
+7️⃣ **Deploy to Container**  
+   - Stops and removes any existing container.  
+   - Runs the new container on **port 3000**.  
+   - Logs container output.
 
-SonarQube Analysis
+## 📌 Load Balancing & Autoscaling in AWS**  
+   - Uses **AWS Application Load Balancer (ALB)** to distribute incoming traffic across multiple EC2 instances.  
+   - Implements **AWS Auto Scaling Group (ASG)** to dynamically add or remove instances based on CPU usage or traffic.  
+   - Ensures **high availability and zero downtime** by gradually deploying new instances while keeping the old ones running until fully replaced.
 
-Runs SonarQube static code analysis to ensure code quality.
+##  Monitoring with Prometheus & Grafana**  
+   - **Prometheus** collects metrics from the application and infrastructure.  
+   - **Grafana** visualizes these metrics with dashboards.  
+   - Ensure the application exposes metrics for Prometheus scraping (e.g., `/metrics` endpoint).  
+   - Configure Prometheus (running on a separate instance) to scrape application metrics.  
+   - Configure Grafana (running on a separate instance) to use Prometheus as a data source and create dashboards for real-time monitoring.  
 
-Quality Gate
-
-Waits for the SonarQube quality gate result. If it fails, the pipeline stops.
-
-Install Dependencies
-
-Navigates to the application directory (bookmyshow-app).
-
-Removes existing node_modules and installs dependencies using npm install.
-
-Trivy FS Scan
-
-Runs a security scan on the file system to detect vulnerabilities.
-
-Docker Build & Push
-
-Builds a Docker image for the application.
-
-Pushes the image to Docker Hub.
-
-Deploy to Container
-
-Stops and removes any existing container.
-
-Runs the new container on port 3000.
-
-Logs container output.
-
-Monitoring with Prometheus and Grafana
-
-Prometheus collects metrics from the application and infrastructure.
-
-Grafana visualizes these metrics with dashboards.
-
-Ensure the application exposes metrics for Prometheus scraping (e.g., /metrics endpoint).
-
-Configure Prometheus (running on a separate instance) to scrape application metrics.
-
-Configure Grafana (running on a separate instance) to use Prometheus as a data source and create dashboards for real-time monitoring.
-
-Running the Application Locally
-
-To test the application locally:
-
-cd bookmyshow-app
-npm install
-npm start
-
-The app should now be running on http://localhost:3000.
-
-Running the Jenkins Pipeline
-
-Ensure Jenkins is running and configured with the necessary tools (Node.js, SonarQube, Docker, Trivy).
-
-Set up credentials for DockerHub and SonarQube.
-
-Trigger the Jenkins build and monitor the pipeline.
-
-Docker Commands
-
-To manually build and run the app in Docker:
-
-docker build -t bookmyshow-app .
-docker run -p 3000:3000 bookmyshow-app
-
-Monitoring Setup
-
-Prometheus
-
-Install Prometheus on a separate instance and configure it to scrape application metrics.
-
-Grafana
-
-Install and start Grafana on a separate instance.
-
-Add Prometheus (running on a separate instance) as a data source in Grafana.
-
-Create dashboards to monitor application metrics.
-
-Author
-
-Ragesh VK
-
+## 👨‍💻 Author
+   - Ragesh VK
